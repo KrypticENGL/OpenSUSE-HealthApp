@@ -597,6 +597,53 @@ input {
   gap: 4px;
 }
 
+/* Forms */
+.form-group {
+  display: flex;
+  flex-direction: column;
+  gap: var(--spacing-2);
+  margin-bottom: var(--spacing-4);
+}
+
+.form-label {
+  font-size: 0.875rem;
+  font-weight: 600;
+  color: var(--color-primary);
+}
+
+.form-input {
+  background-color: var(--color-background);
+  border: 1px solid var(--color-surface-variant);
+  border-radius: var(--radius-lg);
+  padding: var(--spacing-3) var(--spacing-4);
+  font-size: 0.875rem;
+  color: var(--color-primary);
+  transition: all 0.2s;
+  width: 100%;
+}
+
+.form-input:focus {
+  outline: none;
+  border-color: var(--color-primary);
+  box-shadow: 0 0 0 2px rgba(15, 67, 97, 0.1);
+}
+
+.add-medicine-form {
+  background-color: rgba(45, 91, 122, 0.05);
+  border-radius: var(--radius-xl);
+  padding: var(--spacing-5);
+  margin-bottom: var(--spacing-4);
+}
+
+.form-row {
+  display: flex;
+  gap: var(--spacing-4);
+}
+
+.form-row .form-group {
+  flex: 1;
+}
+
 .insights-grid {
   display: grid;
   grid-template-columns: 1fr;
