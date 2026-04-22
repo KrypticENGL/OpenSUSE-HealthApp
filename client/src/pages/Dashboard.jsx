@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import Card from '../components/ui/Card';
 import Button from '../components/ui/Button';
-import { Activity, Pill, Droplets, Moon, CheckCircle2, Circle, Clock, ChevronRight, Plus, X } from 'lucide-react';
+import { Activity, Pill, Droplets, Moon, CheckCircle2, Circle, Clock, ChevronRight, Plus, X, Trash2 } from 'lucide-react';
 
 const Dashboard = () => {
   const [checklistItems, setChecklistItems] = useState([
@@ -43,6 +43,11 @@ const Dashboard = () => {
     );
   };
 
+  const deleteTask = (id, e) => {
+    e.stopPropagation();
+    setChecklistItems(items => items.filter(item => item.id !== id));
+  };
+
   const completedCount = checklistItems.filter(item => item.completed).length;
 
   return (
@@ -52,18 +57,25 @@ const Dashboard = () => {
         <p>Here's your health summary for today.</p>
       </header>
 
-      {/* Primary Status Card */}
+      {/* Primary Status Card — AI Insight */}
       <Card className="status-card">
         <div className="status-card-icon">
            <Activity size={120} />
         </div>
         <div className="status-card-content">
           <div>
-            <h2>Overall Status</h2>
-            <p>Your symptoms are well-managed today. Keep up the good work!</p>
+            <div style={{ display: 'flex', alignItems: 'center', gap: '0.5rem', marginBottom: '0.5rem' }}>
+              <h2>AI Health Insight</h2>
+              <span className="ai-badge">✦ AI</span>
+            </div>
+            <p className="ai-insight-text">
+              Your heart rate has remained stable at 72 bpm over the past week, and your medication adherence is at 100% for the last 14 days — excellent consistency. 
+              However, your blood pressure reading of 135/85 mmHg is slightly elevated; consider reducing sodium intake and scheduling a follow-up with Dr. Jenkins to discuss adjustments.
+            </p>
             <div className="status-tags">
                <span className="tag-stable">Stable</span>
                <span className="tag-streak">Day 14 Streak</span>
+               <span className="tag-bp-watch">BP Watch</span>
             </div>
           </div>
           <Button variant="primary">Log Symptoms</Button>
@@ -150,15 +162,29 @@ const Dashboard = () => {
                     {item.completed ? <CheckCircle2 size={28} /> : <Circle size={28} strokeWidth={2} />}
                   </button>
                   <div className="task-content">
-                    <h4 className={`task-title ${item.completed ? 'completed' : ''}`}>{item.title}</h4>
+                    <div style={{ display: 'flex', alignItems: 'center', gap: '0.5rem' }}>
+                      <h4 className={`task-title ${item.completed ? 'completed' : ''}`}>{item.title}</h4>
+                      {item.completed && item.type === 'medicine' && (
+                        <span className="vital-badge vital-badge-normal" style={{ fontSize: '0.625rem', padding: '2px 8px' }}>Taken</span>
+                      )}
+                    </div>
                     <p className="task-desc">
                       {item.type === 'medicine' ? <Pill size={14} /> : <Activity size={14} />} 
                       {item.desc}
                     </p>
                   </div>
-                  <span className={item.completed ? "task-time-completed" : "task-time-pending"}>
-                    {!item.completed && <Clock size={12} />} {item.time}
-                  </span>
+                  <div style={{ display: 'flex', alignItems: 'center', gap: '0.5rem' }}>
+                    <span className={item.completed ? "task-time-completed" : "task-time-pending"}>
+                      {!item.completed && <Clock size={12} />} {item.time}
+                    </span>
+                    <button 
+                      className="task-delete-btn" 
+                      onClick={(e) => deleteTask(item.id, e)}
+                      aria-label="Delete alarm"
+                    >
+                      <Trash2 size={16} />
+                    </button>
+                  </div>
                 </Card>
               ))}
             </div>
@@ -212,25 +238,7 @@ const Dashboard = () => {
             </Card>
           </section>
 
-          <section>
-             <h3 className="section-title" style={{ marginBottom: '1rem' }}>Vitals Snapshot</h3>
-             <div className="vitals-container">
-               <Card className="vital-card">
-                  <div>
-                    <p className="vital-label">Heart Rate</p>
-                    <p className="vital-value">72 <span className="vital-unit">bpm</span></p>
-                  </div>
-                  <div className="vital-chart-placeholder">Chart</div>
-               </Card>
-               <Card className="vital-card">
-                  <div>
-                    <p className="vital-label">Blood Pressure</p>
-                    <p className="vital-value">118/76 <span className="vital-unit">mmHg</span></p>
-                  </div>
-                  <div className="vital-chart-placeholder">Chart</div>
-               </Card>
-             </div>
-          </section>
+
         </div>
 
       </div>

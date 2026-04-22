@@ -2,10 +2,10 @@ import React from 'react';
 import Sidebar from './Sidebar';
 import Header from './Header';
 
-const Layout = ({ children }) => {
+const Layout = ({ children, currentView, setCurrentView }) => {
   return (
     <div className="app-container">
-      <Sidebar />
+      <Sidebar currentView={currentView} setCurrentView={setCurrentView} />
       <div className="main-content">
         <Header />
         <main className="content-wrapper">

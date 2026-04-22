@@ -1,8 +1,8 @@
 import React from 'react';
 
-const Card = ({ children, className = '' }) => {
+const Card = ({ children, className = '', ...props }) => {
   return (
-    <div className={`card ${className}`}>
+    <div className={`card ${className}`} {...props}>
       {children}
     </div>
   );

@@ -1,13 +1,18 @@
 import React from 'react';
 import { Home, FileText, Calendar, Activity, Settings, User } from 'lucide-react';
 
-const Sidebar = () => {
+const Sidebar = ({ currentView, setCurrentView }) => {
   const navItems = [
-    { icon: <Home size={24} />, label: 'Dashboard', active: true },
-    { icon: <Activity size={24} />, label: 'My Health' },
-    { icon: <FileText size={24} />, label: 'Records' },
-    { icon: <Calendar size={24} />, label: 'Appointments' },
+    { id: 'dashboard', icon: <Home size={24} />, label: 'Dashboard' },
+    { id: 'myHealth', icon: <Activity size={24} />, label: 'My Health' },
+    { id: 'records', icon: <FileText size={24} />, label: 'Records' },
+    { id: 'appointments', icon: <Calendar size={24} />, label: 'Appointments' },
   ];
+
+  const handleNavClick = (e, id) => {
+    e.preventDefault();
+    setCurrentView(id);
+  };
 
   return (
     <aside className="sidebar">
@@ -19,11 +24,12 @@ const Sidebar = () => {
       </div>
 
       <nav className="sidebar-nav">
-        {navItems.map((item, index) => (
+        {navItems.map((item) => (
           <a
-            key={index}
+            key={item.id}
             href="#"
-            className={`nav-item ${item.active ? 'active' : ''}`}
+            onClick={(e) => handleNavClick(e, item.id)}
+            className={`nav-item ${currentView === item.id ? 'active' : ''}`}
           >
             {item.icon}
             <span>{item.label}</span>
@@ -32,7 +38,11 @@ const Sidebar = () => {
       </nav>
 
       <div className="sidebar-footer">
-         <a href="#" className="nav-item">
+         <a 
+           href="#" 
+           className={`nav-item ${currentView === 'settings' ? 'active' : ''}`}
+           onClick={(e) => handleNavClick(e, 'settings')}
+         >
             <Settings size={24} />
             <span>Settings</span>
           </a>
